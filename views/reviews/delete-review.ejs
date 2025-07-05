@@ -1,0 +1,31 @@
+<%# A consistant header among pages%>
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<%# A message block available for messages we want to add to the page later%>
+<%- messages() %>
+
+<%# Code block to display errors %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div class="form">
+  <p>Confirm Deletion - The delete is permanent.</p>
+  <form id="deleteReviewForm" class="delete-review-form" action="/reviews/delete-review" method="post">
+    <fieldset>
+      <label for="review_text"><strong>Make</strong></label><br>
+      <textarea id="review_text" name="review_text" rows="4" cols="50" required readonly <%= locals.review_text %>></textarea><br>
+      <input type="submit" name="submit" value="Delete Vehicle"/>
+      <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
+      <input type="hidden" name="account_id" <% if(locals.account_id) { %> value="<%= locals.account_id %>" <% } %>>
+    </fieldset>
+  </form>
+</div>

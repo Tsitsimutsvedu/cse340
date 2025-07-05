@@ -1,0 +1,36 @@
+<%# A consistant header among pages%>
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('/')
+    } %>
+
+<%# A message block available for messages we want to add to the page later%>
+<%- messages() %>
+
+<%# Code block to display errors %>
+<% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+<div class="form">
+  <p>ALL FIELDS ARE REQUIRED.</p>
+  <form id="updateForm" class="edit-review-form" action="/review/edit-review" method="post">
+    <fieldset>
+      <label for="account_firstname"><strong>Screen Name:</strong></label><br>
+      <input type="text" id="account_firstname" name="account_firstname" required readonly value="<%= locals.account_firstname %>"><br>
+      <label for="review_text"><strong>Review:</strong></label><br>
+      <textarea id="review_text" name="review_text" rows="4" cols="50" required readonly <%= locals.review_text %>></textarea><br>
+      <input type="submit" name="submit" value="Update Vehicle" disabled>
+      <input type="hidden" name="inv_id"
+      <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+      <% } %>>
+    </fieldset>
+  </form>
+</div>
+
+<script src="../../js/inv-update.js"></script>
