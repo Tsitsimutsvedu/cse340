@@ -1,60 +1,75 @@
-const express = require('express')
-const router = express.Router()
-const accountController = require('../controllers/accountController')
-const utilities = require('../utilities/index')
-const validate = require('../utilities/account-validation')
+// This file defines the routes for account management, including login, registration, and account updates.
+const express = require("express");
+const router = new express.Router();
+const accountController = require("../controllers/accountController");
+const utilities = require("../utilities");
+const validate = require('../utilities/account-validation');
 
-// Route to build account view
-router.get('/login', utilities.handleErrors(accountController.buildLogin));
+// Route to deliver the login view
+router.get("/login", utilities.handleErrors(accountController.buildLogin));
 
 // Route to build registration view
-router.get('/register', utilities.handleErrors(accountController.buildRegister));
+router.get("/register", utilities.handleErrors(accountController.buildRegister));
 
-// Route to build account management view
-router.get(
-  '/', 
-  utilities.checkLogin, 
-  utilities.handleErrors(accountController.buildAccountManagement));
+// Route to deliver the account management view
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildManagement));
 
-// Route to build edit account view
-router.get('/edit-account/:account_id', utilities.handleErrors(accountController.buildEditAccount));
+// Route to deliver the account update view
+router.get("/update/:account_id", utilities.checkLogin, utilities.handleErrors(accountController.buildUpdateView));
 
-// Route for processing registration without validation, just posts ALL inputs
-//router.post('/register', utilities.handleErrors(accountController.registerAccount));
+// Route to handle logout
+router.get("/logout", utilities.handleErrors(accountController.logout));
 
 // Process the registration data
 router.post(
-    '/register',
-    validate.registrationRules(),
+    "/register",
+    validate.registationRules(), 
     validate.checkRegData,
     utilities.handleErrors(accountController.registerAccount)
 );
 
-// Process login attempt
+// Process the login request
 router.post(
-    '/login',
-    validate.loginRules(),
+    "/login",
+    validate.loginRules(), 
     validate.checkLoginData,
-    utilities.handleErrors(accountController.loginAccount)
-  );
-
-// Process account info update
-router.post(
-  '/edit',
-  validate.updateDataRules(),
-  validate.checkUpdateData,
-  utilities.handleErrors(accountController.editAccount)
+    utilities.handleErrors(accountController.accountLogin)
 );
 
-// Process account password update
+// Process the account update
 router.post(
-  '/edit-password',
-  validate.updatePasswordRules(),
-  validate.checkUpdateData,
-  utilities.handleErrors(accountController.editPassword)
+    "/update",
+    utilities.checkLogin,
+    validate.accountUpdateRules(), 
+    validate.checkAccountUpdateData,
+    utilities.handleErrors(accountController.updateAccount)
 );
 
-// Process logout attempt
-router.get('/logout', utilities.handleErrors(accountController.logoutAccount));
+// Process the password update
+router.post(
+    "/update-password",
+    utilities.checkLogin,
+    validate.passwordUpdateRules(), 
+    validate.checkPasswordUpdateData,
+    utilities.handleErrors(accountController.updatePassword)
+);
+
+// Process adding a vehicle to favorites
+router.post(
+    "/add-favorite",
+    utilities.checkLogin,
+    validate.favoritesRules(), 
+    validate.checkFavoritesData,
+    utilities.handleErrors(accountController.addFavorite)
+);
+
+// Process removing a vehicle from favorites
+router.post(
+    "/remove-favorite",
+    utilities.checkLogin,
+    validate.favoritesRules(), 
+    validate.checkFavoritesData,
+    utilities.handleErrors(accountController.removeFavorite)
+);
 
 module.exports = router;

@@ -1,34 +1,60 @@
-<%# A consistant header among pages%>
-<% if (title) { %>
-<h1><%= title %></h1>
-<% } else {
-  res.redirect('/')
-} %>
 
-<%# A message block available for messages we want to add to the page later%>
-<%- messages() %>
+    <h1><%= title %></h1>
+    
+    <%- messages() %>
 
-<%# Code block to display errors %>
-<% if (errors) { %>
-  <ul class="notice">
- <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
-<%  }) %>
- </ul>
-<% } %>
+    <% if (errors) { %>
+        <div class="errors">
+          <ul>
+          <% errors.array().forEach(error => { %>
+            <li><%= error.msg %></li>
+          <% }) %>
+          </ul>
+        </div>
+      <% } %>
+      
 
-<%# Placeholder for login view if built in utilities folder %>
-<%# logView %>
+    <div class="login-container">
+      <form action="/account/login" method="POST" class="login-form">
+        <label for="account_email">Email:</label>
+        <input 
+          type="email" 
+          id="account_email" 
+          name="account_email" 
+          placeholder="Enter your email" 
+          required
+          value="<%= locals.account_email || '' %>"
+        >
 
-<form class="login-form" action="/account/login" method="post">
-<fieldset>
-<label for="account_email"><strong>Email Address:</strong></label><br>
-<input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>"><br>
-<label for="account_password"><strong>Password:</strong></label><br>
-<input type="password" id="account_password" name="account_password" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"><br>
-<span>Passwords must be minimum of 12 characters and include 1 capital letter, 1 number and 1 special character.</span>
-<input type="button" value="Show Password"><br>
-<input type="submit" value="Login">
-<p>No account? <a href="../../account/register">Sign-up</a></p>
-</fieldset>
-</form>
+        <label for="account_password">Password:</label>
+        
+        <input 
+          type="password" 
+          id="account_password" 
+          name="account_password" 
+          placeholder="Enter your password" 
+          required
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+          title="Must match your registered password requirements"
+        >
+        <div class="password-reminder">
+            <small>
+                <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter and 1 special character</span>
+            </small>
+          </div>
+
+        <!-- Show Password Checkbox -->
+        <div class="show-password-container">
+          <input type="checkbox" id="show-password">
+          <label for="show-password">Show Password</label>
+        </div>
+
+        <button type="submit">LOGIN</button>
+      </form>
+      <p class="register-link">
+        No account? <a href="/account/register">Sign-up</a>
+      </p>
+    </div>
+
+  <!-- Include the separate JS file -->
+  <script src="/js/showPassword.js"></script>

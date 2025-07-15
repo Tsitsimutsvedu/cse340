@@ -13,13 +13,12 @@
 <% } %>
 
 <div class="form-container">
-  <div class="form-instructions">All fields are required. You are editing an existing vehicle.</div>
-  <form id="updateForm" action="/inv/update" method="post">
-    <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>" <% } %>>
+  <div class="form-instructions">All fields are required.</div>
+  <form action="/inv/add-inventory" method="post">
     <div class="form-group">
-      <% if (classificationSelect && classificationSelect.includes('id="classificationList"')) { %>
+      <% if (classificationList && classificationList.includes('id="classificationList"')) { %>
         <label for="classificationList">Classification:</label>
-        <%- classificationSelect %>
+        <%- classificationList %>
       <% } else { %>
         <p class="error">Error loading classifications. Please try again later.</p>
       <% } %>
@@ -96,7 +95,6 @@
              pattern="[A-Za-z ]+" title="Letters and spaces only" required>
     </div>
 
-    <button type="submit" disabled>Update Vehicle</button>
+    <button type="submit">Add Vehicle</button>
   </form>
-  <script src="/js/inv-update.js"></script>
 </div>
