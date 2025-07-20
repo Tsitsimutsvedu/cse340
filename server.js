@@ -78,6 +78,7 @@ const host = process.env.HOST;
 app.listen(port, '0.0.0.0', () => {
   console.log(`app listening on ${host}:${port}`);
 });
+
 /* ***********************
  * Index Route
  *************************/
