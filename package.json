@@ -28,6 +28,6 @@
   "devDependencies": {
     "nodemon": "^3.1.0"
   },
-    "packageManager": "yarn@pnpm@10.5.2"
+    "packageManager": "yarn@pnpm@1.22.22"
 
 }
